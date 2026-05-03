@@ -63,6 +63,7 @@ const sendWelcomeEmail = async (email, name, userId) => {
 
   await resend.emails.send({
     from:    FROM,
+    reply_to: 'cimeiras@gmail.com',
     to:      email,
     subject: '¡Bienvenida a Cimeiras! 🏔️',
     html,
