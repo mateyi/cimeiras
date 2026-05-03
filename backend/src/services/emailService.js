@@ -3,7 +3,7 @@ const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = 'Cimeiras <onboarding@resend.dev>';
+const FROM = 'Cimeiras <hola@cimeiras.com.ar>';
 // Cuando tengas el dominio verificado en Resend cambiás esto por:
 // const FROM = 'Cimeiras <hola@cimeiras.com.ar>';
 
