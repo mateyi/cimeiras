@@ -1,4 +1,5 @@
 // src/controllers/orderController.js
+const { sendOrderConfirmation } = require('../services/emailService');
 
 const db = require('../config/db');
 
@@ -135,12 +136,29 @@ const createOrder = async (req, res) => {
     }
 
     // Si llegamos acá sin errores, confirmamos todo
-    await client.query('COMMIT');
+await client.query('COMMIT');
 
-    return res.status(201).json({
-      ...order,
-      items: insertedItems,
-    });
+// Enviar email de confirmación
+try {
+  await sendOrderConfirmation({
+    id:               order.id,
+    customer_name:    order.customer_name,
+    customer_email:   order.customer_email,
+    total_price:      order.total_price,
+    items:            insertedItems.map((item, i) => ({
+      ...item,
+      product_name: items[i]?.product_name || 'Producto',
+    })),
+  });
+} catch (emailErr) {
+  console.error('[createOrder] Error enviando email:', emailErr.message);
+  // No falla la orden si el email falla
+}
+
+return res.status(201).json({
+  ...order,
+  items: insertedItems,
+});
 
 } catch (err) {
   await client.query('ROLLBACK');
