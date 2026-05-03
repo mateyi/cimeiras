@@ -18,7 +18,7 @@ const sendOrderConfirmation = async (order) => {
     items = [],
   } = order;
 
-  const shortId = id.slice(0, 8).toUpperCase();
+const shortId = order.order_code || id.slice(0, 8).toUpperCase();
 
   const itemsHtml = items.length > 0
     ? items.map(item => `

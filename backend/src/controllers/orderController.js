@@ -87,26 +87,21 @@ const createOrder = async (req, res) => {
 
     // ── 2. Insertar la orden ─────────────────────────────────
     const userId = req.user?.id || null;
+    const orderCode = 'CIM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const { rows: orderRows } = await client.query(
       `INSERT INTO orders
-         (user_id, total_price, customer_name, customer_email,
-          shipping_street, shipping_city, shipping_province,
-          shipping_postal, shipping_country, notes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-       RETURNING *`,
-      [
-        userId,
-        totalPrice,
-        customer_name,
-        customer_email,
-        shipping_street,
-        shipping_city,
-        shipping_province,
-        shipping_postal,
-        shipping_country || 'Argentina',
-        notes || null,
-      ]
+   (user_id, total_price, customer_name, customer_email,
+    shipping_street, shipping_city, shipping_province,
+    shipping_postal, shipping_country, notes, order_code)
+ VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+ RETURNING *`,
+[
+  userId, totalPrice, customer_name, customer_email,
+  shipping_street, shipping_city, shipping_province,
+  shipping_postal, shipping_country || 'Argentina',
+  notes || null, orderCode,
+]
     );
 
     const order = orderRows[0];
