@@ -27,7 +27,7 @@ const PRODUCTS = [
     price:    48000,
     category: 'faldas',
     sizes:    T,
-    images:   ['falda-pantalon-tenis'],
+    images:   ['falda-pantalon-tenis.png'],
   },
 
   // ══ CALZAS BIKER / CORTAS ($30.000) ══════════════════
