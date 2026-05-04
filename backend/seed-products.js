@@ -37,7 +37,7 @@ const PRODUCTS = [
     price:    30000,
     category: 'calzas',
     sizes:    T,
-    images:   ['calza-biker1.webp','calza-biker2.webp','calza-biker3.webp','calza-biker4.webp'],
+    images:   ['calza-biker1.jpg','calza-biker2.jpg','calza-biker3.jpg','calza-biker4.jpg'],
   },
   {
     name:     'Calza Biker Púrpura',
@@ -143,7 +143,7 @@ const PRODUCTS = [
     price:    42000,
     category: 'calzas',
     sizes:    T,
-    images:   ['crop-top-lasvegas-1.webp','crop-top-lasvegas-2.webp'],
+    images:   ['crop-top-lasvegas.jpg','crop-top-lasvegas-2.webp'],
   },
   {
     name:     'Calza Los Ángeles',
@@ -151,7 +151,7 @@ const PRODUCTS = [
     price:    42000,
     category: 'calzas',
     sizes:    T,
-    images:   ['top-losangeles-1.webp','top-losangeles-2.webp','top-losangeles-3.webp'],
+    images:   ['top-losangeles1.jpg','top-losangeles2.jpg','top-losangeles3.jpg'],
   },
   {
     name:     'Calza Print Coral',
@@ -249,7 +249,7 @@ const PRODUCTS = [
     price:    30000,
     category: 'tops',
     sizes:    T,
-    images:   ['top-liso-1.webp','top-liso-2.webp','top-liso-3.webp','top-liso-4.webp'],
+    images:   ['top-liso1.jpg','top-liso2.jpg'],
   },
   {
     name:     'Top Las Vegas',
@@ -257,7 +257,7 @@ const PRODUCTS = [
     price:    30000,
     category: 'tops',
     sizes:    T,
-    images:   ['crop-top-lasvegas-1.webp','crop-top-lasvegas-2.webp'],
+    images:   ['crop-top-lasvegas.jpg','crop-top-lasvegas-2.webp'],
   },
   {
     name:     'Top Los Ángeles',
@@ -265,7 +265,7 @@ const PRODUCTS = [
     price:    30000,
     category: 'tops',
     sizes:    T,
-    images:   ['top-losangeles-1.webp','top-losangeles-2.webp','top-losangeles-3.webp'],
+    images:   ['top-losangeles1.jpg','top-losangeles2.jpg','top-losangeles3.jpg'],
   },
   {
     name:     'Top Print Coral',
@@ -283,7 +283,7 @@ const PRODUCTS = [
     price:    33000,
     category: 'tops',
     sizes:    T,
-    images:   ['crop-top-lasvegas-1.webp','crop-top-lasvegas-2.webp'],
+    images:   ['crop-top-lasvegas.jpg','crop-top-lasvegas-2.webp'],
   },
   {
     name:     'Crop Top Los Ángeles',
@@ -291,7 +291,7 @@ const PRODUCTS = [
     price:    33000,
     category: 'tops',
     sizes:    T,
-    images:   ['top-losangeles-1.webp','top-losangeles-2.webp','top-losangeles-3.webp'],
+    images:   ['top-losangeles1.jpg','top-losangeles2.jpg','top-losangeles3.jpg'],
   },
   {
     name:     'Crop Top Print Coral',
@@ -307,7 +307,7 @@ const PRODUCTS = [
     price:    33000,
     category: 'tops',
     sizes:    T,
-    images:   ['crop-top-liso1.webp','crop-top-liso2.webp','crop-top-liso3.webp'],
+    images:   ['crop-top-liso1.jpg','crop-top-liso-2.jpg','crop-top-liso-3.jpg'],
   },
   {
     name:     'Crop Top Amarillo Pastel',
@@ -325,7 +325,7 @@ const PRODUCTS = [
     price:    30000,
     category: 'tops',
     sizes:    T,
-    images:   ['musculosa1.webp','musculosa2.webp','musculosa3.webp','musculosa4.webp','musculosa5.webp','musculosa6.webp'],
+    images:   ['musculosa1.jpg','musculosa2.jpg','musculosa3.jpg','musculosa4.jpg','musculosa5.jpg','musculosa6.webp'],
   },
 
   // ══ REMERAS MANGA CORTA ($26.000) ═════════════════════
@@ -335,7 +335,7 @@ const PRODUCTS = [
     price:    26000,
     category: 'remeras',
     sizes:    T,
-    images:   ['reme1.webp','reme2.webp'],
+    images:   ['reme1.jpg','reme2.jpg'],
   },
   {
     name:     'Remera Austria',
