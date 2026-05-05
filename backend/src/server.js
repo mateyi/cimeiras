@@ -17,6 +17,7 @@ const userRoutes        = require('./routes/userRoutes');
 const productRoutes     = require('./routes/productRoutes');
 const orderRoutes       = require('./routes/orderRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const { releaseExpiredReservations } = require('./controllers/reservationController');
 
