@@ -17,6 +17,7 @@ const userRoutes        = require('./routes/userRoutes');
 const productRoutes     = require('./routes/productRoutes');
 const orderRoutes       = require('./routes/orderRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const { releaseExpiredReservations } = require('./controllers/reservationController');
 
@@ -118,6 +119,7 @@ app.use('/api/users',        authLimiter, userRoutes);
 app.use('/api/products',     productRoutes);
 app.use('/api/orders',       orderRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/payments',     paymentRoutes);
 
 app.get('/api/health', (_req, res) =>
   res.json({ status: 'OK', timestamp: new Date() })
