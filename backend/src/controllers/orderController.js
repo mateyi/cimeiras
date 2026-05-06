@@ -1,5 +1,5 @@
 // src/controllers/orderController.js
-const { sendOrderConfirmation } = require('../services/emailService');
+const { sendOrderConfirmation, sendAdminOrderNotification } = require('../services/emailService');
 
 const db = require('../config/db');
 
@@ -131,35 +131,48 @@ const createOrder = async (req, res) => {
     }
 
     // Si llegamos acá sin errores, confirmamos todo
-await client.query('COMMIT');
+    await client.query('COMMIT');
 
-// Enviar email de confirmación
-try {
-  await sendOrderConfirmation({
-    id:               order.id,
-    customer_name:    order.customer_name,
-    customer_email:   order.customer_email,
-    total_price:      order.total_price,
-    items:            insertedItems.map((item, i) => ({
-      ...item,
-      product_name: items[i]?.product_name || 'Producto',
-    })),
-  });
-} catch (emailErr) {
-  console.error('[createOrder] Error enviando email:', emailErr.message);
-  // No falla la orden si el email falla
-}
+    // Enviar emails de confirmación
+    try {
+      await sendOrderConfirmation({
+        id:             order.id,
+        order_code:     order.order_code,
+        customer_name:  order.customer_name,
+        customer_email: order.customer_email,
+        total_price:    order.total_price,
+        items:          insertedItems.map((item, i) => ({
+          ...item,
+          product_name: items[i]?.product_name || 'Producto',
+        })),
+      });
+      // Email al admin
+      await sendAdminOrderNotification({
+        id:             order.id,
+        order_code:     order.order_code,
+        customer_name:  order.customer_name,
+        customer_email: order.customer_email,
+        total_price:    order.total_price,
+        items:          insertedItems.map((item, i) => ({
+          ...item,
+          product_name: items[i]?.product_name || 'Producto',
+        })),
+      });
+    } catch (emailErr) {
+      console.error('[createOrder] Error enviando emails:', emailErr.message);
+      // No falla la orden si los emails fallan
+    }
 
-return res.status(201).json({
-  ...order,
-  items: insertedItems,
-});
+    return res.status(201).json({
+      ...order,
+      items: insertedItems,
+    });
 
-} catch (err) {
-  await client.query('ROLLBACK');
-  console.error('[createOrder]', err.message);
-  return res.status(500).json({ error: err.message });  // ← muestra el error real
-}
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('[createOrder]', err.message);
+    return res.status(500).json({ error: err.message });
+  }
 };
 
 
@@ -434,6 +447,6 @@ module.exports = {
   getMyOrders,
   getOrderById,
   getAllOrders,
-  updateOrderStatus,   
-  cancelOrder,   
+  updateOrderStatus,
+  cancelOrder,
 };

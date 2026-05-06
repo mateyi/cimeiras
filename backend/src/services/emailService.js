@@ -178,4 +178,101 @@ const sendOrderConfirmation = async (order) => {
   });
 };
 
-module.exports = { sendWelcomeEmail, sendOrderConfirmation };
+const sendAdminOrderNotification = async (order) => {
+  const { customer_name, customer_email, id, total_price, items = [], order_code } = order;
+  const shortId = order_code || id.slice(0, 8).toUpperCase();
+  const fecha   = new Date().toLocaleDateString('es-AR', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+  });
+
+  const itemsHtml = items.length > 0
+    ? items.map(item => `
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #2a2a2a;color:#f5f5f5;font-size:14px">
+            ${item.product_name || 'Producto'}
+            ${item.size ? ` — Talle ${item.size}` : ''}
+          </td>
+          <td style="padding:8px 0;border-bottom:1px solid #2a2a2a;color:#f5f5f5;font-size:14px;text-align:right">
+            x${item.quantity}
+          </td>
+          <td style="padding:8px 0;border-bottom:1px solid #2a2a2a;color:#FFE000;font-size:14px;text-align:right;font-weight:800">
+            $${Number(item.unit_price * item.quantity).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
+          </td>
+        </tr>`).join('')
+    : `<tr><td colspan="3" style="color:#888;padding:8px 0">Sin detalle</td></tr>`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="UTF-8">
+    <style>
+      body{font-family:Arial,sans-serif;background:#0e0e0e;margin:0;padding:0}
+      .container{max-width:580px;margin:40px auto;background:#1a1a1a;border:1px solid #2a2a2a}
+      .header{padding:24px 32px;border-bottom:2px solid #FFE000;display:flex;justify-content:space-between;align-items:center}
+      .header h1{color:#FFE000;font-size:20px;margin:0;letter-spacing:.1em}
+      .header span{color:#888;font-size:12px}
+      .body{padding:32px}
+      .section-title{color:#888;font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px}
+      .value{color:#f5f5f5;font-size:15px;margin-bottom:20px}
+      .order-id{color:#FFE000;font-size:22px;font-weight:800;letter-spacing:.1em}
+      table{width:100%;border-collapse:collapse;margin:16px 0}
+      th{text-align:left;color:#888;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid #2a2a2a}
+      th:not(:first-child){text-align:right}
+      .total-row{margin-top:12px;padding-top:12px;border-top:2px solid #FFE000;display:flex;justify-content:space-between;align-items:center}
+      .total-label{color:#888;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+      .total-value{color:#FFE000;font-size:24px;font-weight:800}
+      .footer{padding:20px 32px;border-top:1px solid #2a2a2a;text-align:center}
+      .footer p{color:#444;font-size:12px;margin:0}
+    </style>
+    </head>
+    <body>
+    <div class="container">
+      <div class="header">
+        <h1>▲ NUEVA COMPRA</h1>
+        <span>${fecha}</span>
+      </div>
+      <div class="body">
+        <div class="section-title">Número de pedido</div>
+        <div class="order-id">#${shortId}</div>
+
+        <div class="section-title">Cliente</div>
+        <div class="value">${customer_name}</div>
+
+        <div class="section-title">Email del cliente</div>
+        <div class="value">${customer_email}</div>
+
+        <div class="section-title">Productos</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th style="text-align:right">Cant.</th>
+              <th style="text-align:right">Precio</th>
+            </tr>
+          </thead>
+          <tbody>${itemsHtml}</tbody>
+        </table>
+
+        <div class="total-row">
+          <span class="total-label">Total</span>
+          <span class="total-value">$${Number(total_price).toLocaleString('es-AR', { maximumFractionDigits: 0 })}</span>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Panel admin: <a href="${process.env.FRONTEND_URL}/admin" style="color:#FFE000">${process.env.FRONTEND_URL}/admin</a></p>
+      </div>
+    </div>
+    </body>
+    </html>
+  `;
+
+  await resend.emails.send({
+    from:    FROM,
+    to:      'cimeiras@gmail.com',
+    subject: `🛍️ Nueva compra #${shortId} — $${Number(total_price).toLocaleString('es-AR', { maximumFractionDigits: 0 })}`,
+    html,
+  });
+};
+
+module.exports = { sendWelcomeEmail, sendOrderConfirmation, sendAdminOrderNotification };
